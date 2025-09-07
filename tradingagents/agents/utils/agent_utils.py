@@ -363,7 +363,7 @@ class Toolkit:
 
     @staticmethod
     @tool
-    def get_stock_news_openai(
+    def get_stock_news_ark(
         ticker: Annotated[str, "the company's ticker"],
         curr_date: Annotated[str, "Current date in yyyy-mm-dd format"],
     ):
@@ -376,13 +376,13 @@ class Toolkit:
             str: A formatted string containing the latest news about the company on the given date.
         """
 
-        openai_news_results = interface.get_stock_news_openai(ticker, curr_date)
+        openai_news_results = interface.get_stock_news_ark(ticker, curr_date)
 
         return openai_news_results
 
     @staticmethod
     @tool
-    def get_global_news_openai(
+    def get_global_news_ark(
         curr_date: Annotated[str, "Current date in yyyy-mm-dd format"],
     ):
         """
@@ -393,13 +393,13 @@ class Toolkit:
             str: A formatted string containing the latest macroeconomic news on the given date.
         """
 
-        openai_news_results = interface.get_global_news_openai(curr_date)
+        openai_news_results = interface.get_global_news_ark(curr_date)
 
         return openai_news_results
 
     @staticmethod
     @tool
-    def get_fundamentals_openai(
+    def get_fundamentals_ark(
         ticker: Annotated[str, "the company's ticker"],
         curr_date: Annotated[str, "Current date in yyyy-mm-dd format"],
     ):
@@ -412,7 +412,7 @@ class Toolkit:
             str: A formatted string containing the latest fundamental information about the company on the given date.
         """
 
-        openai_fundamentals_results = interface.get_fundamentals_openai(
+        openai_fundamentals_results = interface.get_fundamentals_ark(
             ticker, curr_date
         )
 

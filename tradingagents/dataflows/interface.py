@@ -1,4 +1,8 @@
 from typing import Annotated, Dict
+
+from volcenginesdkark import ARKApi
+from volcenginesdkarkruntime import Ark
+
 from .reddit_utils import fetch_top_from_category
 from .yfin_utils import *
 from .stockstats_utils import *
@@ -12,7 +16,6 @@ import os
 import pandas as pd
 from tqdm import tqdm
 import yfinance as yf
-from openai import OpenAI
 from .config import get_config, set_config, DATA_DIR
 
 
@@ -702,9 +705,9 @@ def get_YFin_data(
     return filtered_data
 
 
-def get_stock_news_openai(ticker, curr_date):
+def get_stock_news_ark(ticker, curr_date):
     config = get_config()
-    client = OpenAI(base_url=config["backend_url"])
+    client = Ark(api_key=config["api_key"], base_url=config["backend_url"])
 
     response = client.responses.create(
         model=config["quick_think_llm"],
@@ -737,9 +740,9 @@ def get_stock_news_openai(ticker, curr_date):
     return response.output[1].content[0].text
 
 
-def get_global_news_openai(curr_date):
+def get_global_news_ark(curr_date):
     config = get_config()
-    client = OpenAI(base_url=config["backend_url"])
+    client = Ark(api_key=config["api_key"], base_url=config["backend_url"])
 
     response = client.responses.create(
         model=config["quick_think_llm"],
@@ -772,9 +775,9 @@ def get_global_news_openai(curr_date):
     return response.output[1].content[0].text
 
 
-def get_fundamentals_openai(ticker, curr_date):
+def get_fundamentals_ark(ticker, curr_date):
     config = get_config()
-    client = OpenAI(base_url=config["backend_url"])
+    client = Ark(api_key=config["api_key"], base_url=config["backend_url"])
 
     response = client.responses.create(
         model=config["quick_think_llm"],
