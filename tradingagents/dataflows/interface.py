@@ -98,7 +98,7 @@ def get_finnhub_company_insider_sentiment(
     return (
         f"## {ticker} Insider Sentiment Data for {before} to {curr_date}:\n"
         + result_str
-        + "The change field refers to the net buying/selling from all insiders' transactions. The mspr field refers to monthly share purchase ratio."
+        + "change 字段表示所有内部人交易的净买卖数量；mspr 字段表示月度股份购买比率。"
     )
 
 
@@ -140,8 +140,17 @@ def get_finnhub_company_insider_transactions(
     return (
         f"## {ticker} insider transactions from {before} to {curr_date}:\n"
         + result_str
-        + "The change field reflects the variation in share count—here a negative number indicates a reduction in holdings—while share specifies the total number of shares involved. The transactionPrice denotes the per-share price at which the trade was executed, and transactionDate marks when the transaction occurred. The name field identifies the insider making the trade, and transactionCode (e.g., S for sale) clarifies the nature of the transaction. FilingDate records when the transaction was officially reported, and the unique id links to the specific SEC filing, as indicated by the source. Additionally, the symbol ties the transaction to a particular company, isDerivative flags whether the trade involves derivative securities, and currency notes the currency context of the transaction."
-    )
+        + "change（变动数量）：表示持股数量的变动情况，负数代表减持（即持股减少），正数则代表增持；"
+        + "share（总股数）：指该笔交易涉及的总股份数量；"
+        + "transactionPrice（成交价格）：表示该笔交易每股的实际成交价格；"
+        + "transactionDate（交易日期）：记录该笔交易实际发生的日期；"
+        + "name（交易人姓名）：标识进行该笔交易的内部人员（如公司高管、大股东等）；"
+        + "transactionCode（交易类型代码，例如 S 代表卖出）：用于标明该笔交易的性质（如买入/卖出等），常见代码如 'S' 表示卖出（Sale）、'P' 表示买入（Purchase）等；"
+        + "filingDate（申报日期）：记录该笔交易被官方正式申报（向监管机构提交报告）的日期；"
+        + "id（唯一标识符）：该笔交易的唯一 ID，可用于关联至对应的美国证券交易委员会（SEC）官方申报文件，具体来源见字段 source；"
+        + "symbol（股票代码）：将该笔交易与特定上市公司关联起来，标识所交易股票所属的公司；"
+        + "isDerivative（是否衍生品交易）：标记该笔交易是否涉及衍生证券（如期权、权证等金融衍生工具）；"
+        + "currency（货币类型）：标明该笔交易使用的计价货币，例如 USD（美元）、CNY（人民币）等。")
 
 
 def get_simfin_balance_sheet(
@@ -187,7 +196,15 @@ def get_simfin_balance_sheet(
     return (
         f"## {freq} balance sheet for {ticker} released on {str(latest_balance_sheet['Publish Date'])[0:10]}: \n"
         + str(latest_balance_sheet)
-        + "\n\nThis includes metadata like reporting dates and currency, share details, and a breakdown of assets, liabilities, and equity. Assets are grouped as current (liquid items like cash and receivables) and noncurrent (long-term investments and property). Liabilities are split between short-term obligations and long-term debts, while equity reflects shareholder funds such as paid-in capital and retained earnings. Together, these components ensure that total assets equal the sum of liabilities and equity."
+        + "\n\n资产（Assets） 按流动性分为两类："
+        + "   流动资产（Current Assets）：包括现金、应收账款等具有较高流动性的项目；"
+        + "   非流动资产（Noncurrent Assets）：主要包括长期投资、固定资产（如房产、设备）等长期持有的资产。"
+        + "负债（Liabilities） 划分为："
+        + "    短期负债（Short-term Obligations）：通常指一年内到期的债务或应付款项；"
+        + "    长期负债（Long-term Debts）：到期时间超过一年的债务，如长期借款等。"
+        + "    权益（Equity） 反映股东权益部分，包括实收资本（Paid-in Capital）、留存收益（Retained Earnings）等项目，体现公司净资产中归属于股东的部分。"
+        + ""
+        + "这些要素共同构成了标准的会计等式：总资产 = 总负债 + 所有者权益，确保财务报表的结构完整与平衡。"
     )
 
 
@@ -234,8 +251,13 @@ def get_simfin_cashflow(
     return (
         f"## {freq} cash flow statement for {ticker} released on {str(latest_cash_flow['Publish Date'])[0:10]}: \n"
         + str(latest_cash_flow)
-        + "\n\nThis includes metadata like reporting dates and currency, share details, and a breakdown of cash movements. Operating activities show cash generated from core business operations, including net income adjustments for non-cash items and working capital changes. Investing activities cover asset acquisitions/disposals and investments. Financing activities include debt transactions, equity issuances/repurchases, and dividend payments. The net change in cash represents the overall increase or decrease in the company's cash position during the reporting period."
-    )
+        + "\n\n该部分包含一些元数据信息，例如申报日期（reporting dates）、币种（currency）、股份详情（share details），以及资金流动明细（breakdown of cash movements）。"
+        + "经营活动现金流（Operating Activities）：反映企业核心业务运营所产生的现金流量，其中包括："
+        + "对净利润（net income）进行非现金项目调整（如折旧、摊销等），"
+        + "以及营运资金变动（working capital changes，如应收应付、存货等变动）的影响。"
+        + "投资活动现金流（Investing Activities）：涵盖企业资产的购置与处置（如固定资产、无形资产等），以及对外投资行为（如购买或出售其他公司的股权、债券、金融资产等）。"
+        + "融资活动现金流（Financing Activities）：包括债务相关的交易（如借款、还款）、股权融资行为（如发行新股、回购股份），以及股息支付（dividend payments）。"
+        + "现金净变动（Net Change in Cash）：表示在报告期间内，公司整体现金余额的净增加或净减少金额，是经营活动、投资活动和融资活动三者现金流合计的结果，直观体现公司当期的资金变化情况。"    )
 
 
 def get_simfin_income_statements(
@@ -281,7 +303,11 @@ def get_simfin_income_statements(
     return (
         f"## {freq} income statement for {ticker} released on {str(latest_income['Publish Date'])[0:10]}: \n"
         + str(latest_income)
-        + "\n\nThis includes metadata like reporting dates and currency, share details, and a comprehensive breakdown of the company's financial performance. Starting with Revenue, it shows Cost of Revenue and resulting Gross Profit. Operating Expenses are detailed, including SG&A, R&D, and Depreciation. The statement then shows Operating Income, followed by non-operating items and Interest Expense, leading to Pretax Income. After accounting for Income Tax and any Extraordinary items, it concludes with Net Income, representing the company's bottom-line profit or loss for the period."
+        + "\n\n这其中包括了诸如申报日期和币种等元数据信息，以及股份详情，并提供了该公司财务业绩的完整分解。"
+        + "从营业收入（Revenue）开始，展示了营业成本（CostofRevenue），进而得出毛利润（GrossProfit）；"
+        + "接着详细列示了运营费用（OperatingExpenses），其中包含销售、一般及管理费用（SG&A）、研发费用（R&D）以及折旧（Depreciation）；"
+        + "随后呈现的是营业利润（OperatingIncome），之后是非经营项目与利息费用（InterestExpense），最终得出税前利润（PretaxIncome）；"
+        + "在扣除所得税（IncomeTax）以及可能的非经常性项目（ExtraordinaryItems）后，最终得到净利润（NetIncome）——即该公司在该报告期内实现的最终盈亏（底线利润或亏损）。"
     )
 
 
@@ -369,15 +395,6 @@ def get_reddit_company_news(
     look_back_days: Annotated[int, "how many days to look back"],
     max_limit_per_day: Annotated[int, "Maximum number of news per day"],
 ) -> str:
-    """
-    Retrieve the latest top reddit news
-    Args:
-        ticker: ticker symbol of the company
-        start_date: Start date in yyyy-mm-dd format
-        end_date: End date in yyyy-mm-dd format
-    Returns:
-        str: A formatted dataframe containing the latest news articles posts on reddit and meta information in these columns: "created_utc", "id", "title", "selftext", "score", "num_comments", "url"
-    """
 
     start_date = datetime.strptime(start_date, "%Y-%m-%d")
     before = start_date - relativedelta(days=look_back_days)
@@ -432,78 +449,78 @@ def get_stock_stats_indicators_window(
     online: Annotated[bool, "to fetch data online or offline"],
 ) -> str:
 
-    best_ind_params = {
-        # Moving Averages
-        "close_50_sma": (
-            "50 SMA: A medium-term trend indicator. "
-            "Usage: Identify trend direction and serve as dynamic support/resistance. "
-            "Tips: It lags price; combine with faster indicators for timely signals."
-        ),
-        "close_200_sma": (
-            "200 SMA: A long-term trend benchmark. "
-            "Usage: Confirm overall market trend and identify golden/death cross setups. "
-            "Tips: It reacts slowly; best for strategic trend confirmation rather than frequent trading entries."
-        ),
-        "close_10_ema": (
-            "10 EMA: A responsive short-term average. "
-            "Usage: Capture quick shifts in momentum and potential entry points. "
-            "Tips: Prone to noise in choppy markets; use alongside longer averages for filtering false signals."
-        ),
-        # MACD Related
-        "macd": (
-            "MACD: Computes momentum via differences of EMAs. "
-            "Usage: Look for crossovers and divergence as signals of trend changes. "
-            "Tips: Confirm with other indicators in low-volatility or sideways markets."
-        ),
-        "macds": (
-            "MACD Signal: An EMA smoothing of the MACD line. "
-            "Usage: Use crossovers with the MACD line to trigger trades. "
-            "Tips: Should be part of a broader strategy to avoid false positives."
-        ),
-        "macdh": (
-            "MACD Histogram: Shows the gap between the MACD line and its signal. "
-            "Usage: Visualize momentum strength and spot divergence early. "
-            "Tips: Can be volatile; complement with additional filters in fast-moving markets."
-        ),
-        # Momentum Indicators
-        "rsi": (
-            "RSI: Measures momentum to flag overbought/oversold conditions. "
-            "Usage: Apply 70/30 thresholds and watch for divergence to signal reversals. "
-            "Tips: In strong trends, RSI may remain extreme; always cross-check with trend analysis."
-        ),
-        # Volatility Indicators
-        "boll": (
-            "Bollinger Middle: A 20 SMA serving as the basis for Bollinger Bands. "
-            "Usage: Acts as a dynamic benchmark for price movement. "
-            "Tips: Combine with the upper and lower bands to effectively spot breakouts or reversals."
-        ),
-        "boll_ub": (
-            "Bollinger Upper Band: Typically 2 standard deviations above the middle line. "
-            "Usage: Signals potential overbought conditions and breakout zones. "
-            "Tips: Confirm signals with other tools; prices may ride the band in strong trends."
-        ),
-        "boll_lb": (
-            "Bollinger Lower Band: Typically 2 standard deviations below the middle line. "
-            "Usage: Indicates potential oversold conditions. "
-            "Tips: Use additional analysis to avoid false reversal signals."
-        ),
-        "atr": (
-            "ATR: Averages true range to measure volatility. "
-            "Usage: Set stop-loss levels and adjust position sizes based on current market volatility. "
-            "Tips: It's a reactive measure, so use it as part of a broader risk management strategy."
-        ),
-        # Volume-Based Indicators
-        "vwma": (
-            "VWMA: A moving average weighted by volume. "
-            "Usage: Confirm trends by integrating price action with volume data. "
-            "Tips: Watch for skewed results from volume spikes; use in combination with other volume analyses."
-        ),
-        "mfi": (
-            "MFI: The Money Flow Index is a momentum indicator that uses both price and volume to measure buying and selling pressure. "
-            "Usage: Identify overbought (>80) or oversold (<20) conditions and confirm the strength of trends or reversals. "
-            "Tips: Use alongside RSI or MACD to confirm signals; divergence between price and MFI can indicate potential reversals."
-        ),
-    }
+    best_ind_params ={
+    # Moving Averages
+    "close_50_sma": (
+        "50 日简单移动平均线（SMA）：一个中周期趋势指标。"
+        "用途：识别趋势方向，可作为动态支撑/阻力位。"
+        "提示：该指标对价格变动有一定滞后性，建议与反应更快的指标结合使用以获取更及时的信号。"
+    ),
+    "close_200_sma": (
+        "200 日简单移动平均线（SMA）：一个长周期趋势基准线。"
+        "用途：确认整体市场趋势，识别黄金交叉（金叉）与死亡交叉（死叉）形态。"
+        "提示：该指标反应较慢，更适合用于战略性趋势确认，而非频繁交易入场。"
+    ),
+    "close_10_ema": (
+        "10 日指数移动平均线（EMA）：一个响应迅速的短期均线。"
+        "用途：捕捉动量的快速变化以及潜在的入场时机。"
+        "提示：在震荡行情中易受噪音干扰，建议与较长周期均线配合使用以过滤假信号。"
+    ),
+    # MACD Related
+    "macd": (
+        "MACD：通过两条指数移动平均线的差值计算动量。"
+        "用途：观察 MACD 线与信号线的交叉点及背离现象，作为趋势变化的信号。"
+        "提示：在低波动或横盘市场中，建议结合其他指标共同确认信号。"
+    ),
+    "macds": (
+        "MACD 信号线：对 MACD 线进行平滑处理的指数移动平均线。"
+        "用途：通过 MACD 线与信号线的交叉触发交易信号。"
+        "提示：应作为整体策略的一部分使用，以避免误报信号。"
+    ),
+    "macdh": (
+        "MACD 柱状图：显示 MACD 线与其信号线之间的差距。"
+        "用途：直观展现动量强度，有助于提前发现背离信号。"
+        "提示：在快速波动的市场中可能较为敏感，建议结合其他过滤器使用。"
+    ),
+    # Momentum Indicators
+    "rsi": (
+        "RSI（相对强弱指标）：衡量动量并标识超买/超卖状态。"
+        "用途：常用 70/30 作为超买超卖阈值，同时观察背离现象以判断潜在反转。"
+        "提示：在强势趋势中，RSI 可能长期处于极端区域，建议始终结合趋势分析综合判断。"
+    ),
+    # Volatility Indicators
+    "boll": (
+        "布林带中轨：基于 20 日简单移动平均线（SMA），构成布林带的核心基准线。"
+        "用途：作为价格走势的动态参考基准。"
+        "提示：建议结合上轨与下轨共同使用，以有效识别突破或反转信号。"
+    ),
+    "boll_ub": (
+        "布林带上轨：通常位于中轨上方 2 倍标准差处。"
+        "用途：提示潜在的超买状态以及突破压力区域。"
+        "提示：建议通过其他工具进行信号确认；在强势趋势中，价格可能持续沿上轨运行。"
+    ),
+    "boll_lb": (
+        "布林带下轨：通常位于中轨下方 2 倍标准差处。"
+        "用途：提示潜在的超卖状态。"
+        "提示：建议结合其他分析手段，避免误判反转信号。"
+    ),
+    "atr": (
+        "ATR（平均真实波幅）：通过计算真实波幅的平均值来衡量市场波动性。"
+        "用途：根据当前市场波动设定止损位，或调整仓位大小。"
+        "提示：该指标具有滞后性，建议作为整体风险管理策略的一部分使用。"
+    ),
+    # Volume-Based Indicators
+    "vwma": (
+        "VWMA（成交量加权移动平均线）：一种根据成交量进行加权的移动平均线。"
+        "用途：通过结合价格走势与成交量数据，辅助确认趋势。"
+        "提示：需注意成交量突增可能导致结果偏差，建议与其他成交量分析方法结合使用。"
+    ),
+    "mfi": (
+        "MFI（资金流量指标）：一个结合价格与成交量、用于衡量买卖压力的动量指标。"
+        "用途：识别超买（>80）或超卖（<20）状态，确认趋势或反转的力度。"
+        "提示：可与 RSI 或 MACD 指标配合使用以确认信号；价格与 MFI 出现背离时，可能预示潜在反转。"
+    ),
+}
 
     if indicator not in best_ind_params:
         raise ValueError(
@@ -717,7 +734,7 @@ def get_stock_news_ark(ticker, curr_date):
                 "content": [
                     {
                         "type": "input_text",
-                        "text": f"Can you search Social Media for {ticker} from 7 days before {curr_date} to {curr_date}? Make sure you only get the data posted during that period.",
+                        "text": f"请问您能否从 {curr_date} 前 7 天开始，到 {curr_date} 当天为止，在社交媒体上搜索股票代码为 {ticker} 的相关内容？请确保只获取该时间段内发布的帖子数据。",
                     }
                 ],
             }
@@ -752,7 +769,7 @@ def get_global_news_ark(curr_date):
                 "content": [
                     {
                         "type": "input_text",
-                        "text": f"Can you search global or macroeconomics news from 7 days before {curr_date} to {curr_date} that would be informative for trading purposes? Make sure you only get the data posted during that period.",
+                        "text": f"是否可以搜索从 {curr_date} 前 7 天至 {curr_date} 当天 的全球或宏观经济新闻，这些新闻应对交易决策具有参考价值？",
                     }
                 ],
             }
@@ -787,7 +804,7 @@ def get_fundamentals_ark(ticker, curr_date):
                 "content": [
                     {
                         "type": "input_text",
-                        "text": f"Can you search Fundamental for discussions on {ticker} during of the month before {curr_date} to the month of {curr_date}. Make sure you only get the data posted during that period. List as a table, with PE/PS/Cash flow/ etc",
+                        "text": f"能否查找 {ticker} 在 {curr_date} 所在月份的前一个月 至 {curr_date} 所在月份期间，关于其基本面（Fundamental）的讨论内容。请确保只获取该时间段内发布的数据。并以表格形式列出，包含市盈率（PE）、市销率（PS）、现金流等指标。",
                     }
                 ],
             }
